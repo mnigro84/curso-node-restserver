@@ -62,10 +62,12 @@ const usuariosPut = async(req, res = response) => {
 const usuariosDelete = async(req, res = response) => {
 
     const id = req.params.id;
+    const uid = req.uid;
+
     const estado = {estado:false};
     const usuario = await Usuario.findByIdAndUpdate(id, estado);
 
-    res.json(usuario);
+    res.json({usuario});
 }
 
 module.exports = {
