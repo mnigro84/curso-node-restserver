@@ -17,15 +17,26 @@ const {
     tieneRole 
 } = require('../middlewares');
 
+const { cacheInit } = require('../middlewares/cache');
+
 const router = Router();
 
-router.get('/', usuariosGet);
+router.get('/', 
+cacheInit,
+usuariosGet);
+
+router.get('/:id',
+    check('id', 'No es un id valido').isMongoId(),
+    check('id').custom( existeUsuarioPorId ),
+    validarCampos,
+    cacheInit,
+usuariosGet);
 
 router.put('/:id',[
     check('id', 'No es un id valido').isMongoId(),
     check('id').custom( existeUsuarioPorId ),
     check('rol').custom( esRoleValido ),
-    validarCampos
+    validarCampos,
 ], usuariosPut);
 
 router.post('/',[
